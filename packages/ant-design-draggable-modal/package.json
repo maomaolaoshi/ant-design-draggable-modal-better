@@ -21,7 +21,7 @@
     "scripts": {
         "build": "yarn build:bundle && yarn build:copy",
         "build:bundle": "tsdx build",
-        "build:copy": "cp ../../README.md ./ && cp ./index.css ./dist",
+        "build:copy": "shx cp ../../README.md ./ && shx cp ./index.css ./dist",
         "lint": "tsdx lint src",
         "dev": "tsdx watch --noClean",
         "test": "tsdx test --passWithNoTests",
@@ -39,6 +39,7 @@
         "eslint-config-prettier": "^6.15.0",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
+        "shx": "^0.3.3",
         "tsdx": "^0.14.1",
         "tslib": "^2.0.3",
         "typescript": "^4.0.5"

@@ -14,7 +14,8 @@ export interface ModalState {
     width: number
     height: number
     zIndex: number
-    visible: boolean
+    visible: boolean,
+    initialZIndex: number
 }
 
 // State of all modals.
@@ -42,17 +43,21 @@ export const initialModalState: ModalState = {
     height: 800,
     zIndex: 0,
     visible: false,
+    initialZIndex: 0,
 }
 
 const getInitialModalState = ({
-    initialWidth = initialModalState.width,
-    initialHeight = initialModalState.height,
-}: {
+                                  initialWidth = initialModalState.width,
+                                  initialHeight = initialModalState.height,
+                                  initialZIndex = initialModalState.initialZIndex,
+                              }: {
     initialWidth?: number
     initialHeight?: number
+    initialZIndex?: number
 }) => {
     return {
         ...initialModalState,
+        zIndex: initialZIndex || initialModalState.zIndex,
         width: initialWidth,
         height: initialHeight,
     }
@@ -67,25 +72,27 @@ export type Action =
     | { type: 'windowResize'; size: { width: number; height: number } }
     | { type: 'drag'; id: ModalID; x: number; y: number }
     | {
-          type: 'resize'
-          id: ModalID
-          x: number
-          y: number
-          width: number
-          height: number
-      }
+    type: 'resize'
+    id: ModalID
+    x: number
+    y: number
+    width: number
+    height: number
+}
 
 export const getModalState = ({
-    state,
-    id,
-    initialWidth,
-    initialHeight,
-}: {
+                                  state,
+                                  id,
+                                  initialWidth,
+                                  initialHeight,
+                                  initialZIndex,
+                              }: {
     state: ModalsState
     id: ModalID
     initialWidth?: number
     initialHeight?: number
-}): ModalState => state.modals[id] || getInitialModalState({ initialWidth, initialHeight })
+    initialZIndex?: number
+}): ModalState => state.modals[id] || getInitialModalState({ initialWidth, initialHeight, initialZIndex })
 
 const getNextZIndex = (state: ModalsState, id: string): number =>
     getModalState({ state, id }).zIndex === state.maxZIndex ? state.maxZIndex : state.maxZIndex + 1
